@@ -1,8 +1,8 @@
 
-function [iter,DIV,f] =rosen(alfa,eta)
+function [iter,f] =rosen(alfa,eta)
 
-global x1i x2i a threshold maxiter up down reduce anim;
-DIV=0;
+global x1i x2i a threshold maxiter up down reduce;
+
 
 clear z
 
@@ -16,16 +16,7 @@ z = z';
 
 v=floor(a/80)+3:floor(a):max(max(z));
 
-%figure(1), clf
-%contour(z,v,'b'), axis square
-%set(gca,'XTick',[1 51 101 151 201])
-%set(gca,'XTickLabel',[-2 -1 0 1 2])
-%set(gca,'YTick',[1 51 101 151 201])
-%set(gca,'YTickLabel',[-1 0 1 2 3])
 
-%hold on
-
-%plot(151,101,'b.')
 
 x1 = x1i;
 x2 = x2i;
@@ -45,7 +36,7 @@ minf = f;
 
 iter = 0;
 
-%plot(50 * x1 + 101, 50 * x2 + 51,'r.')
+
 x1old = x1;
 x2old = x2;
 while f > threshold | fold > threshold
@@ -92,14 +83,9 @@ while f > threshold | fold > threshold
       fold = f;
       f = (1 - x1)^2 + a * (x2 - x1^2)^2;
    end
-   %plot(50 * [x1old x1] + 101, 50 * [x2old x2] + 51, 'r.-')
-	if anim, pause(0), end
+
    x1old = x1;
    x2old = x2;
-   %if f>fold
-    %   DIV=1;
-     %  break
-   %end
 end
 
 if iter <= maxiter & abs(x1) < 2 & abs(x2) < 2
@@ -107,6 +93,7 @@ if iter <= maxiter & abs(x1) < 2 & abs(x2) < 2
 else
    fprintf('Did not converge in %d steps, f = %g\n', maxiter, f)
 end
-end
+
 % 
-% fprintf('Function value: %f\n', (1 - x1)^2 + a * (x2 - x1^2)^2)
+ fprintf('Function value: %f\n', (1 - x1)^2 + a * (x2 - x1^2)^2)
+end

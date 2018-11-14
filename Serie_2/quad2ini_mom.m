@@ -1,4 +1,4 @@
-global  x1i x2i threshold maxiter a;
+global  x1i x2i threshold maxiter a anim;
 
 x1i = -9;
 x2i = 9;
@@ -11,5 +11,5 @@ a = 20;
 
 eta = .1;
 alfa = 0;
-
+anim=1
 %anim = 1;

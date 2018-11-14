@@ -24,7 +24,7 @@ while f > threshold | isnan(f)
    x1 = x1 - eta * a * x1;
    fold = f;
    f = a * x1^2 / 2;
-   if f>fold
+   if f>=fold
        DIV=1
        break
    end

@@ -1,6 +1,5 @@
-function [iter,DIV,f]=quad2(a,eta)
+function [iter,f]=quad2(a,eta)
 global  x1i x2i threshold maxiter alfa;
-DIV=0;
 
 x2a = (-10:10);
 
@@ -12,14 +11,6 @@ z = z';
 
 v=10:40:max(max(z));
 
-%figure(1), clf
-%contour(z,10,'b'), axis square
-%set(gca,'XTick',[1 6 11 16 21])
-%set(gca,'XTickLabel',[-10 -5 0 5 10])
-%set(gca,'YTick',[1 6 11 16 21])
-%set(gca,'YTickLabel',[-10 -5 0 5 10])
-
-%hold on
 
 x1 = x1i;
 x2 = x2i;
@@ -31,7 +22,7 @@ dx2 = 0;
 
 iter = 0;
 
-%plot(x1+11,x2+11,'r.')
+
 x1old = x1;
 x2old = x2;
 while f > threshold | fold > threshold | isnan(f)
@@ -43,14 +34,10 @@ while f > threshold | fold > threshold | isnan(f)
    x2 = x2 - eta * dx2;
    fold = f;
    f = (a*x1^2 + x2^2) / 2;
-    if f>fold
-       DIV=1;
-       break
-   end
-   %plot([x1old x1] + 11, [x2old x2] + 11, 'r.-')
-   x1old = x1;
+   
+    x1old = x1;
    x2old = x2;
-   %if anim, pause(.0001), end
+ 
 end
 
 if iter <= maxiter
@@ -58,5 +45,6 @@ if iter <= maxiter
 else
    fprintf('Did not converge in %d steps, f = %g\n', maxiter, f)
 end
+
+drawnow
 end
-%drawnow

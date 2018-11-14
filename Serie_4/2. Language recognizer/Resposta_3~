@@ -1,0 +1,95 @@
+
+%------------------------------------------------------------------------
+%Code Section 1
+%In this section we initialize a variable called SumPCond_trig to 0 which 
+%has the meaning of a cumulative log conditional probability function 
+            SumPCond_trig =0;
+%------------------------------------------------------------------------
+%Code Section 2
+%In this section we accumulate the sum of the conditional proba
+            %bility regarding the Naive Bayes Classifier
+            %We applied the Laplace smoothing by adding +1 to the variable
+            %trigramcount and in the denominator by adding the total number
+            %trigrams with 60 possible characters.
+                SumPCond_trig= SumPCond_trig+log10((trigramcount+1)/(total_counts(languageindex)+60.^3));
+
+%----------------------------------------------------------------------
+%Code Section 3
+   % In this section we calculate the probability à priori of the
+           % class, in this case the language. Laplace smoothing was applied
+            
+          PLang=log10((total_counts(languageindex)+60.^3)/(total_counts(1)+total_counts(2)+total_counts(3)+total_counts(4)+4.*60.^3));
+          
+    %Since we are working with logs the product of the argument results in
+    %a sum of logs, therefore P(C_k|x_1,x_2...,x_p)=P(C_k)*Productory_{i=0}^p(P(x_i|C_k))
+    %turns into log(P(C_k|x_1,x_2...,x_p))=log(P(C_k)+sum_{i=0}^p
+    %(log(P(x_i|C_k))
+    
+            scores(languageindex)=PLang+SumPCond_trig;
+		
+%--------------------------------------------------------------------------	    
+
+Text: O curso dura cinco anos.
+
+Scores:
+pt:   -71.1105
+es: -71.397454
+fr: -81.726183
+en: -83.136385
+
+Recognized language: pt,   classification margin = 0.28695396
+
+
+
+Text: El mercado está muy lejos.
+
+Scores:
+pt: -88.616781
+es: -80.239483
+fr: -101.54662
+en: -110.40813
+
+Recognized language: es,   classification margin =  8.3772982
+
+Text: Tu vais à loja.
+
+Scores:
+pt: -54.156455
+es: -58.723725
+fr: -50.226571
+en: -68.297633
+
+Recognized language: fr,   classification margin =   3.929884
+
+
+
+Text: The word é is very short.
+
+Scores:
+pt: -85.973832
+es:  -92.35177
+fr: -89.645949
+en: -85.835754
+
+Recognized language: en,   classification margin = 0.13807796
+
+Text: I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach. I go to the beach.
+
+Scores:
+pt: -689.93915
+es: -698.35694
+fr: -727.16409
+en: -576.64454
+
+Recognized language: en,   classification margin =   113.2946
+
+
+A matlab script was made regarding the information of section 3 -Language Recognizer. With this script it was possible to fill the table above tackling the problem of language recognition.
+
+The first phrase  "O curso dura cinco anos.", is a portuguese phrase and our model correctly predicts the language associated. Due to the latin similarities with spanish the classification margin, i.e. the difference between the scores of the most recognized and the second most recognized language is 0.3. This is not much. This difference can be amplified if put a longer sentence since there will be more trigrams regarding the language that we are using.
+
+The second phrase "El mercado está muy lejos.", is clearly a very spanish phrase and our program recognizes this since we have a classification margin of  8.3772982 which is resonably big difference since we are talking about differences of logarithms. One of the factors for this difference that distinguishes this phrase with a spanish idiom are the words "El" and "muy" which have no analog in portuguese, or french or english.
+
+The third phrase "Tu vais à loja." was recognized by our script as a french, even though it is a portuguese phrase. This is a clear error made by our script. The reasons for this error are the words "Tu", "vais" and "à", are words that are communly used by both languages often making that it is harder to distinguish portuguese from french in this case. One of the ways to increase the accuracy of our script is, since we are taking each trigram as independent, even though they aren't, is to increase the number of total trigrams in the text. Adding more words related to the idiom in question, to the text really improves the performance of the script. For example if the phrase was "Tu vais à loja amanhã." our model would have predicted as a portuguese phrase becouse we increased the total number of trigrams with a unique portuguese word "amanhã".
+
+The forth phrase "The word é is very short."

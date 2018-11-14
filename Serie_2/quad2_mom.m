@@ -1,6 +1,5 @@
-function [iter,DIV,f]=quad2_mom(alfa,eta)
+function [iter,f]=quad2_mom(alfa,eta)
 global  x1i x2i threshold maxiter a;
-DIV=0;
 
 x2a = (-10:10);
 
@@ -43,14 +42,10 @@ while f > threshold | fold > threshold | isnan(f)
    x2 = x2 - eta * dx2;
    fold = f;
    f = (a*x1^2 + x2^2) / 2;
-    if f>fold
-       DIV=1;
-       break
-   end
-   %plot([x1old x1] + 11, [x2old x2] + 11, 'r.-')
+  
    x1old = x1;
    x2old = x2;
-   %if anim, pause(.0001), end
+  
 end
 
 if iter <= maxiter
